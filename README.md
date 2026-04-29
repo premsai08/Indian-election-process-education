@@ -50,6 +50,11 @@ The project is a lightweight browser-based civic education guide for Indian elec
 - The UI supports keyboard input and responsive mobile layouts.
 - Dark mode is available.
 
+## Image Credits
+
+- EVM/VVPAT image: Election Commission of India, Government of India, via Wikimedia Commons, GODL-India.
+- Indelible ink polling-booth image: Election Commission of India / Government of India via Press Information Bureau and Wikimedia Commons, GODL-India.
+
 ## Repository Size
 
 This project has no external dependencies or generated build output, so it stays well below the 10 MB repository limit.

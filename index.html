@@ -40,25 +40,24 @@
         </div>
 
         <div class="hero-visual" aria-label="Election readiness preview">
-          <div class="mini-window">
-            <div class="window-bar">
-              <span></span>
-              <span></span>
-              <span></span>
+          <div class="election-stage">
+            <div class="stage-card photo-card">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/6/68/EVM_VVPAT.jpg"
+                alt="EVM and VVPAT machines used in Indian elections"
+              />
+              <span>EVM + VVPAT</span>
             </div>
-            <div class="readiness">
-              <div>
-                <small>Election process map</small>
-                <strong>10</strong>
-              </div>
-              <div class="score-ring" aria-hidden="true"></div>
+            <div class="ballot-cube" aria-hidden="true">
+              <div class="cube-face front">Vote</div>
+              <div class="cube-face side">Roll</div>
+              <div class="cube-face top">ECI</div>
             </div>
-            <ol class="visual-steps">
-              <li><span></span> Electoral roll and Form 6</li>
-              <li><span></span> Constituency and polling booth</li>
-              <li><span></span> Candidate nomination and scrutiny</li>
-              <li><span></span> MCC, voting, counting, results</li>
-            </ol>
+            <div class="stage-card glass-card">
+              <small>Process map</small>
+              <strong>10 steps</strong>
+              <p>Rolls, MCC, nominations, polling, VVPAT, counting.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -95,9 +94,32 @@
         </article>
       </section>
 
+      <section class="media-band" aria-label="Indian election visuals">
+        <figure>
+          <img
+            src="https://commons.wikimedia.org/wiki/Special:FilePath/A%20female%20voter%20being%20administered%20indelible%20ink%2C%20at%20a%20polling%20booth%2C%20during%20the%20Delhi%20Assembly%20Election%2C%20in%20Delhi%20on%20February%2007%2C%202015%20%28cropped%29.jpg"
+            alt="Polling officer applying indelible ink to a voter in India"
+          />
+          <figcaption>Identity check and indelible ink before voting</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/6/68/EVM_VVPAT.jpg"
+            alt="EVM and VVPAT voting machines"
+          />
+          <figcaption>EVM and VVPAT help voters verify the selected vote</figcaption>
+        </figure>
+        <div class="media-copy">
+          <p class="eyebrow">Real process, not just text</p>
+          <h2>See the journey from enrollment to polling booth.</h2>
+          <p>Visual cues make the guide easier for first-time voters: what to prepare, where to verify, and what happens when they reach the booth.</p>
+          <small class="media-credit">Images: Election Commission of India / Government of India via Wikimedia Commons, GODL-India.</small>
+        </div>
+      </section>
+
       <section id="assistant" class="workspace" aria-label="Election assistant">
         <aside class="control-panel" aria-label="Assistant controls">
-          <section class="panel-block" id="roadmap">
+          <section class="panel-block compact-panel" id="roadmap">
             <div class="section-heading">
               <p class="eyebrow">Personal context</p>
               <h2>Find your election path</h2>
@@ -128,7 +150,7 @@
             <button id="buildPlan" class="wide-button">Generate Indian election roadmap</button>
           </section>
 
-          <section class="panel-block" id="official">
+          <section class="panel-block compact-panel" id="official">
             <div class="section-heading">
               <p class="eyebrow">Next verified step</p>
               <h2>Open the official ECI portal for your task</h2>
