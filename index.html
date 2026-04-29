@@ -182,6 +182,12 @@
               <a id="googleMapsLink" target="_blank" rel="noreferrer">Find nearby election offices on Google Maps</a>
               <a id="googleCalendarLink" target="_blank" rel="noreferrer">Add voter enrollment reminder to Google Calendar</a>
             </div>
+            <div class="google-tools gemini-tools" aria-label="Google Gemini helper">
+              <p>Google Gemini</p>
+              <label for="geminiKeyInput">Optional Gemini API key for live AI answers</label>
+              <input id="geminiKeyInput" type="password" placeholder="Paste Google AI Studio API key" />
+              <button id="saveGeminiKey" type="button">Connect Gemini</button>
+            </div>
             <div class="officer-card">
               <small>Election Commission of India</small>
               <strong>CEC: Gyanesh Kumar</strong>
@@ -255,6 +261,6 @@
       </div>
     </template>
 
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>

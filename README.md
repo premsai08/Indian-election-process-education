@@ -13,7 +13,7 @@ The project is a lightweight browser-based civic education guide for Indian elec
 ## Key Features
 
 - India-specific election process timeline.
-- AI-style chatbot experience without requiring API keys.
+- AI assistant with offline election guidance and optional live Gemini answers.
 - State and Union Territory selector covering all Indian States/UTs.
 - Locality input for district, city, town, village, or panchayat guidance.
 - Citizen roadmap for Form 6, Form 8, roll search, and polling station lookup.
@@ -25,7 +25,8 @@ The project is a lightweight browser-based civic education guide for Indian elec
 
 - Google Maps search links help users find nearby election offices, ERO/BLO support points, and voter-registration help around their selected locality.
 - Google Calendar reminder links help users schedule a follow-up to complete Form 6 or check enrollment status.
-- These integrations do not require API keys and do not store or transmit private data from the app.
+- Google Gemini integration is available through an optional Google AI Studio API key for live AI answers inside the assistant.
+- The app still works without a key through a structured offline guide, so evaluators can test the full experience immediately.
 
 ## Product Screens
 
@@ -47,7 +48,8 @@ The project is a lightweight browser-based civic education guide for Indian elec
 2. Select State/UT, enter locality, age, and your role.
 3. Press `Generate Indian election roadmap`.
 4. Ask the AI assistant about voter enrollment, constituencies, candidate nomination, MCC, polling timings, panchayat elections, or counting.
-5. Use official ECI links to verify personal voter details and live election information.
+5. Optionally connect Google Gemini to upgrade the assistant from offline guide mode to live AI mode.
+6. Use official ECI links and Google helpers to verify personal voter details, find offices, and create reminders.
 
 ## Assumptions
 
@@ -65,9 +67,16 @@ The project is a lightweight browser-based civic education guide for Indian elec
 
 ## Testing
 
-- Manually verified the home experience, roadmap generator, AI assistant prompts, official ECI links, Google Maps helper, and Google Calendar helper.
+- Added automated tests with Node's built-in test runner for context inference, enrollment logic, roadmap generation, offline answers, and Google helper links.
+- Manually verified the home experience, roadmap generator, AI assistant prompts, official ECI links, Google Maps helper, Google Calendar helper, and Gemini fallback behavior.
 - Checked responsive layouts for desktop and mobile-width browser views.
 - Verified the repository remains a single-branch static site with no heavy dependencies.
+
+## Run Tests
+
+```bash
+npm test
+```
 
 ## Deployment Guide
 

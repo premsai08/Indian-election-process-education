@@ -674,6 +674,23 @@ select:focus {
   color: var(--green-dark);
 }
 
+.gemini-tools label {
+  color: var(--muted);
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.gemini-tools input {
+  margin-top: 2px;
+}
+
+.gemini-tools button {
+  box-shadow: none;
+  margin-top: 4px;
+}
+
 .officer-card {
   background: var(--surface-2);
   border: 1px solid var(--line);
