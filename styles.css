@@ -848,6 +848,22 @@ body.dark .chat-log {
   margin-bottom: 0;
 }
 
+.site-footer {
+  border-top: 1px solid rgba(217, 226, 234, 0.78);
+  margin-top: 28px;
+  padding: 24px 0 8px;
+}
+
+.site-footer p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;

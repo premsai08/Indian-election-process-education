@@ -27,6 +27,20 @@ The project is a lightweight browser-based civic education guide for Indian elec
 - Google Calendar reminder links help users schedule a follow-up to complete Form 6 or check enrollment status.
 - These integrations do not require API keys and do not store or transmit private data from the app.
 
+## Product Screens
+
+### Home Experience
+
+![Home experience](docs/screenshots/hero-home.png)
+
+### AI Assistant and Roadmap
+
+![Assistant and roadmap](docs/screenshots/assistant-roadmap.png)
+
+### Official ECI and Google Helpers
+
+![Official links and helpers](docs/screenshots/official-links.png)
+
 ## How It Works
 
 1. Open `index.html` in a browser.
@@ -48,6 +62,20 @@ The project is a lightweight browser-based civic education guide for Indian elec
 - No API key is required.
 - No personal data is uploaded or stored.
 - The assistant avoids political persuasion and focuses on civic process education.
+
+## Testing
+
+- Manually verified the home experience, roadmap generator, AI assistant prompts, official ECI links, Google Maps helper, and Google Calendar helper.
+- Checked responsive layouts for desktop and mobile-width browser views.
+- Verified the repository remains a single-branch static site with no heavy dependencies.
+
+## Deployment Guide
+
+1. Push the latest code from `main` to GitHub.
+2. In Google Cloud Shell, clone the GitHub repository.
+3. Deploy the static site to Cloud Run using a simple web server image or your existing deployment flow.
+4. After deployment, open the Cloud Run URL and confirm the home section, assistant section, and official-links section render correctly.
+5. Re-submit the updated Cloud Run URL and GitHub link only if the challenge allows another attempt.
 
 ## Accessibility
 
