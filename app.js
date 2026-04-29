@@ -9,6 +9,7 @@ const apiKeyInput = document.querySelector("#apiKeyInput");
 const modeStatus = document.querySelector("#modeStatus");
 const calendarLink = document.querySelector("#calendarLink");
 const mapsLink = document.querySelector("#mapsLink");
+const readinessScore = document.querySelector("#readinessScore");
 
 const knowledge = [
   {
@@ -47,7 +48,9 @@ function setDefaultDate() {
 function addMessage(sender, text, type = "") {
   const template = document.querySelector("#messageTemplate");
   const node = template.content.firstElementChild.cloneNode(true);
-  node.classList.add(type);
+  if (type) {
+    node.classList.add(type);
+  }
   node.querySelector("strong").textContent = sender;
   node.querySelector("p").textContent = text;
   chatLog.appendChild(node);
@@ -98,6 +101,7 @@ function buildRoadmap() {
   }
 
   addMessage("Assistant", steps.join("\n"));
+  updateReadiness();
   updateGoogleLinks();
 }
 
@@ -148,12 +152,25 @@ function updateGoogleLinks() {
   mapsLink.href = `https://www.google.com/maps/search/${region}%20election%20office`;
 }
 
+function updateReadiness() {
+  const age = Number(ageInput.value || 0);
+  const hasRegion = countryInput.value.trim().length > 1;
+  const hasDate = Boolean(dateInput.value);
+  const stageBonus = stageInput.value === "registered" ? 16 : stageInput.value === "moved" ? 10 : 8;
+  const score = Math.min(96, 42 + (age >= 18 ? 22 : 5) + (hasRegion ? 10 : 0) + (hasDate ? 12 : 0) + stageBonus);
+
+  if (readinessScore) {
+    readinessScore.textContent = `${score}%`;
+  }
+}
+
 chatForm.addEventListener("submit", (event) => {
   event.preventDefault();
   handleQuestion(userInput.value.trim());
 });
 
 document.querySelector("#buildPlan").addEventListener("click", buildRoadmap);
+document.querySelector("#heroRoadmap").addEventListener("click", buildRoadmap);
 
 document.querySelector("#saveKey").addEventListener("click", () => {
   const key = apiKeyInput.value.trim();
@@ -172,9 +189,15 @@ document.querySelectorAll(".topic-button").forEach((button) => {
   button.addEventListener("click", () => handleQuestion(button.dataset.topic));
 });
 
-[countryInput, dateInput].forEach((field) => field.addEventListener("change", updateGoogleLinks));
+[countryInput, ageInput, stageInput, dateInput].forEach((field) => {
+  field.addEventListener("change", () => {
+    updateReadiness();
+    updateGoogleLinks();
+  });
+});
 
 setDefaultDate();
+updateReadiness();
 updateGoogleLinks();
 addMessage(
   "Assistant",

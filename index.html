@@ -8,42 +8,67 @@
   </head>
   <body>
     <header class="topbar">
-      <div>
-        <p class="eyebrow">Virtual PromptWars - Challenge 2</p>
-        <h1>Election Guide Assistant</h1>
-      </div>
-      <button id="themeToggle" class="icon-button" aria-label="Toggle dark mode">◐</button>
+      <a class="brand" href="#top" aria-label="Election Guide Assistant home">
+        <span class="brand-mark">EG</span>
+        <span>
+          <strong>ElectionGuide AI</strong>
+          <small>PromptWars Challenge 2</small>
+        </span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#assistant">Assistant</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#services">Google</a>
+      </nav>
+      <button id="themeToggle" class="ghost-button" aria-label="Toggle dark mode">Theme</button>
     </header>
 
-    <main class="app-shell">
-      <section class="workspace" aria-label="Election assistant">
-        <div class="assistant-panel">
-          <div class="assistant-header">
-            <div>
-              <h2>Ask about elections</h2>
-              <p>Get simple explanations, timelines, and next steps based on your situation.</p>
-            </div>
-            <span class="status-pill" id="modeStatus">Offline knowledge mode</span>
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Neutral civic guidance</p>
+          <h1>Understand every election step with a personal voting roadmap.</h1>
+          <p>
+            Ask questions, generate a preparation plan, add reminders, and find official offices
+            without political persuasion or heavy setup.
+          </p>
+          <div class="hero-actions">
+            <a href="#assistant" class="primary-link">Start assistant</a>
+            <button id="heroRoadmap" class="secondary-link">Build roadmap</button>
           </div>
-
-          <div id="chatLog" class="chat-log" aria-live="polite"></div>
-
-          <form id="chatForm" class="chat-form">
-            <label class="sr-only" for="userInput">Ask a question</label>
-            <input
-              id="userInput"
-              type="text"
-              autocomplete="off"
-              placeholder="Example: How do I register to vote?"
-              required
-            />
-            <button type="submit">Send</button>
-          </form>
         </div>
 
-        <aside class="side-panel" aria-label="Assistant controls">
-          <section>
-            <h2>Your Context</h2>
+        <div class="hero-visual" aria-label="Election readiness preview">
+          <div class="mini-window">
+            <div class="window-bar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="readiness">
+              <div>
+                <small>Readiness score</small>
+                <strong id="readinessScore">74%</strong>
+              </div>
+              <div class="score-ring" aria-hidden="true"></div>
+            </div>
+            <ol class="visual-steps">
+              <li><span></span> Check eligibility</li>
+              <li><span></span> Verify voter list</li>
+              <li><span></span> Save polling reminder</li>
+              <li><span></span> Follow official results</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="assistant" class="workspace" aria-label="Election assistant">
+        <aside class="control-panel" aria-label="Assistant controls">
+          <section class="panel-block" id="roadmap">
+            <div class="section-heading">
+              <p class="eyebrow">Personal context</p>
+              <h2>Build your plan</h2>
+            </div>
             <div class="field-grid">
               <label>
                 Country or region
@@ -59,7 +84,7 @@
                   <option value="new">New voter</option>
                   <option value="registered">Already registered</option>
                   <option value="moved">Moved to new address</option>
-                  <option value="candidate">Interested candidate/volunteer</option>
+                  <option value="candidate">Candidate or volunteer</option>
                 </select>
               </label>
               <label>
@@ -67,45 +92,75 @@
                 <input id="dateInput" type="date" />
               </label>
             </div>
-            <button id="buildPlan" class="wide-button">Build my roadmap</button>
+            <button id="buildPlan" class="wide-button">Generate roadmap</button>
           </section>
 
-          <section>
-            <h2>Google Services</h2>
-            <p class="hint">Optional: add a Gemini API key for smarter answers. The key stays in your browser.</p>
+          <section class="panel-block" id="services">
+            <div class="section-heading">
+              <p class="eyebrow">Google services</p>
+              <h2>Connect tools</h2>
+            </div>
+            <p class="hint">Optional Gemini answers. Your key stays in this browser only.</p>
             <label>
               Gemini API key
               <input id="apiKeyInput" type="password" placeholder="AIza..." />
             </label>
-            <button id="saveKey" class="wide-button secondary">Save key locally</button>
+            <button id="saveKey" class="wide-button amber">Save key locally</button>
             <div class="quick-actions">
-              <a id="calendarLink" target="_blank" rel="noreferrer">Add reminder</a>
-              <a id="mapsLink" target="_blank" rel="noreferrer">Find election office</a>
+              <a id="calendarLink" target="_blank" rel="noreferrer">Calendar</a>
+              <a id="mapsLink" target="_blank" rel="noreferrer">Maps</a>
             </div>
           </section>
         </aside>
+
+        <section class="assistant-panel">
+          <div class="assistant-header">
+            <div>
+              <p class="eyebrow">Interactive assistant</p>
+              <h2>Ask anything about the process</h2>
+              <p>Registration, timelines, polling day, misinformation checks, and candidate basics.</p>
+            </div>
+            <span class="status-pill" id="modeStatus">Offline knowledge mode</span>
+          </div>
+
+          <div id="chatLog" class="chat-log" aria-live="polite"></div>
+
+          <div class="prompt-row" aria-label="Quick prompts">
+            <button class="topic-button" data-topic="Explain voter registration step by step">Registration</button>
+            <button class="topic-button" data-topic="Create an election timeline for me">Timeline</button>
+            <button class="topic-button" data-topic="What happens on voting day?">Voting day</button>
+            <button class="topic-button" data-topic="How can I avoid election misinformation?">Safety</button>
+          </div>
+
+          <form id="chatForm" class="chat-form">
+            <label class="sr-only" for="userInput">Ask a question</label>
+            <input
+              id="userInput"
+              type="text"
+              autocomplete="off"
+              placeholder="Ask: How do I register to vote?"
+              required
+            />
+            <button type="submit">Send</button>
+          </form>
+        </section>
       </section>
 
-      <section class="cards-band" aria-label="Helpful election topics">
+      <section class="insight-band" aria-label="Election assistant strengths">
         <article>
-          <h3>Registration</h3>
-          <p>Eligibility, documents, voter roll checks, and address correction.</p>
-          <button class="topic-button" data-topic="Explain voter registration step by step">Open</button>
+          <span>01</span>
+          <h3>Context-aware</h3>
+          <p>Changes guidance based on age, stage, region, and date.</p>
         </article>
         <article>
-          <h3>Timeline</h3>
-          <p>What to do before, during, and after polling day.</p>
-          <button class="topic-button" data-topic="Create an election timeline for me">Open</button>
+          <span>02</span>
+          <h3>Neutral by design</h3>
+          <p>Explains process only, never candidates or voting choices.</p>
         </article>
         <article>
-          <h3>Voting Day</h3>
-          <p>How to prepare, what to carry, and how voting generally works.</p>
-          <button class="topic-button" data-topic="What happens on voting day?">Open</button>
-        </article>
-        <article>
-          <h3>Safety</h3>
-          <p>How to identify misinformation and use official sources.</p>
-          <button class="topic-button" data-topic="How can I avoid election misinformation?">Open</button>
+          <span>03</span>
+          <h3>Submission ready</h3>
+          <p>No build tools, tiny repository, and public GitHub friendly.</p>
         </article>
       </section>
     </main>
