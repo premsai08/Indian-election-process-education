@@ -1,48 +1,97 @@
 const chatLog = document.querySelector("#chatLog");
 const chatForm = document.querySelector("#chatForm");
 const userInput = document.querySelector("#userInput");
-const countryInput = document.querySelector("#countryInput");
+const stateInput = document.querySelector("#stateInput");
+const localityInput = document.querySelector("#localityInput");
 const ageInput = document.querySelector("#ageInput");
 const stageInput = document.querySelector("#stageInput");
-const dateInput = document.querySelector("#dateInput");
-const apiKeyInput = document.querySelector("#apiKeyInput");
 const modeStatus = document.querySelector("#modeStatus");
-const calendarLink = document.querySelector("#calendarLink");
-const mapsLink = document.querySelector("#mapsLink");
-const readinessScore = document.querySelector("#readinessScore");
+
+const statesAndUTs = [
+  "Andaman and Nicobar Islands",
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chandigarh",
+  "Chhattisgarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jammu and Kashmir",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Ladakh",
+  "Lakshadweep",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Puducherry",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal"
+];
 
 const knowledge = [
   {
-    keys: ["register", "registration", "new voter", "enroll"],
+    keys: ["enroll", "register", "registration", "form 6", "voter id", "new voter"],
     answer:
-      "To register as a voter, first confirm you meet the minimum voting age and citizenship rules for your country or region. Then collect proof of age, address, and identity, fill the official voter registration form, submit it through the official election portal or local election office, and later check whether your name appears on the voter list."
+      "For voter enrollment in India: if you are an Indian citizen and 18 or above on the qualifying date, use Form 6 on the ECI Voter Services portal or submit it through your ERO/BLO. Keep age proof, address proof, and a mobile number ready. After submission, track the reference number, wait for BLO/ERO verification, then confirm your name in the electoral roll. A voter card helps, but the most important requirement is that your name is in the electoral roll."
   },
   {
-    keys: ["timeline", "date", "schedule", "deadline"],
+    keys: ["constituency", "booth", "polling station", "ward", "panchayat", "city", "village", "district"],
     answer:
-      "A practical election timeline has five phases: learn the election type, register or update details early, verify your name on the voter list before the deadline, prepare documents before polling day, and track official results after voting closes."
+      "To find your constituency in India, search your name on electoralsearch.eci.gov.in or the Voter Helpline app. It can show your Assembly Constituency, Parliamentary Constituency, part number, serial number, and polling station. For panchayat, municipality, and local-body wards, also check the State Election Commission website of your state because local-body elections are handled by State Election Commissions."
   },
   {
-    keys: ["vote", "polling", "booth", "day"],
+    keys: ["candidate", "nomination", "contest", "mla", "mp", "sarpanch", "corporator"],
     answer:
-      "On voting day, check your assigned polling place, carry an accepted identity document, follow queue and verification instructions, cast your vote privately, and avoid sharing misinformation or photos where local rules prohibit them."
+      "For candidate nomination, wait for the election notification and file nomination papers before the Returning Officer for that constituency. A candidate usually needs the correct nomination form, affidavit including assets/liabilities and criminal cases, security deposit, proposer signatures as required, photos, party authorization if contesting from a party, and bank/expenditure compliance. The RO scrutinizes nominations, then candidates can withdraw before the final list is published. Panchayat and municipal candidate rules are usually published by the State Election Commission."
   },
   {
-    keys: ["misinformation", "fake", "rumor", "safety"],
+    keys: ["model code", "mcc", "election code", "rules", "campaign"],
     answer:
-      "Treat election messages carefully. Check the original source, compare with the official election authority website, avoid forwarding emotional claims without proof, and look for dates, location, and context before trusting a post."
+      "The Model Code of Conduct starts as soon as the Election Commission announces the election schedule and remains in force until the election process is completed. During MCC, parties and candidates must avoid hate appeals, bribery or inducements, misuse of government machinery, public-funded campaign advertisements, and unauthorized booth entry. Only voters, candidates, polling agents, and persons authorized by ECI can enter polling booths."
   },
   {
-    keys: ["candidate", "nomination", "contest"],
+    keys: ["polling", "vote", "timing", "time", "extended", "queue", "evm", "vvpat"],
     answer:
-      "Candidates usually need to confirm eligibility, prepare nomination documents, follow campaign finance rules, submit forms before the deadline, and comply with the election code of conduct. Exact rules vary by country, state, and election type."
+      "Polling hours are announced in the official election notification and can vary by election and area. A common schedule is morning to evening, often 7 AM to 6 PM, but always verify your constituency notification. If you are already in the queue before closing time, polling officials normally allow you to vote. Any extension or special timing is announced by ECI/CEO/RO. At the booth, identity is checked, your finger is inked, you vote on the EVM, and VVPAT briefly shows the selected candidate slip."
+  },
+  {
+    keys: ["officer", "cec", "election commission", "ero", "blo", "ro", "deo", "ceo"],
+    answer:
+      "India's election machinery has multiple levels: ECI conducts national and state assembly elections; each state/UT has a Chief Electoral Officer; districts have District Election Officers; constituencies have Returning Officers for elections and Electoral Registration Officers for rolls; Booth Level Officers help citizens locally. As checked from ECI press material on 29 Apr 2026, the CEC is Gyanesh Kumar and Election Commissioners are Sukhbir Singh Sandhu and Vivek Joshi. Always verify current officers on eci.gov.in."
+  },
+  {
+    keys: ["counting", "result", "strong room", "evm security"],
+    answer:
+      "After polling, EVMs and VVPATs are sealed, transported under security, and stored in strong rooms. Candidates or their representatives can observe sealing and strong-room arrangements under ECI procedure. Counting happens on the notified counting day. Official results are published on results.eci.gov.in and should be treated as the authoritative source."
   }
 ];
 
-function setDefaultDate() {
-  const date = new Date();
-  date.setDate(date.getDate() + 30);
-  dateInput.value = date.toISOString().slice(0, 10);
+function populateStates() {
+  statesAndUTs.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    stateInput.appendChild(option);
+  });
+  stateInput.value = "Telangana";
 }
 
 function addMessage(sender, text, type = "") {
@@ -57,111 +106,58 @@ function addMessage(sender, text, type = "") {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+function getContext() {
+  const age = Number(ageInput.value || 0);
+  const stage = stageInput.options[stageInput.selectedIndex].text;
+  const ageText = age >= 18 ? "eligible age for general voter enrollment" : "not yet 18, learn now and enroll when eligible";
+  return `State/UT: ${stateInput.value}, locality: ${localityInput.value || "not entered"}, profile: ${stage}, age: ${age || "not provided"} (${ageText}).`;
+}
+
 function offlineAnswer(question) {
   const normalized = question.toLowerCase();
   const matched = knowledge.find((item) => item.keys.some((key) => normalized.includes(key)));
-  const context = getContext();
+  const base = matched
+    ? matched.answer
+    : "Indian elections follow a structured process: electoral roll preparation, schedule announcement, Model Code of Conduct, nomination, scrutiny, withdrawal, campaign, silence period, polling, secure EVM storage, counting, and result declaration. Use ECI portals for national/state assembly elections and State Election Commission portals for panchayat or municipal elections.";
 
-  if (matched) {
-    return `${matched.answer}\n\nFor your context: ${context}`;
-  }
-
-  return `Here is a simple way to proceed: identify the election type, check eligibility, register or update voter details, verify your name on the voter list, prepare accepted ID, and follow official instructions on polling day.\n\nFor your context: ${context}`;
-}
-
-function getContext() {
-  const age = Number(ageInput.value || 0);
-  const ageText = age >= 18 ? "you appear to meet the common 18+ voting age rule" : "you may need to wait until you meet the minimum voting age";
-  return `region: ${countryInput.value || "your region"}, stage: ${stageInput.options[stageInput.selectedIndex].text}, age: ${age || "not provided"} (${ageText}). Always verify final rules on the official election authority website.`;
+  return `${base}\n\nYour context: ${getContext()}\n\nOfficial next step: verify personal details on voters.eci.gov.in or electoralsearch.eci.gov.in.`;
 }
 
 function buildRoadmap() {
-  const electionDate = dateInput.value ? new Date(`${dateInput.value}T09:00:00`) : null;
   const stage = stageInput.value;
-  const steps = [];
+  const locality = localityInput.value || "your locality";
+  const state = stateInput.value;
+  const steps = [`Roadmap for ${locality}, ${state}:`];
 
   if (stage === "new") {
-    steps.push("1. Confirm eligibility and collect identity, age, and address documents.");
-    steps.push("2. Submit voter registration through the official election portal or local office.");
+    steps.push("1. Confirm you are an Indian citizen and 18+ on the qualifying date.");
+    steps.push("2. Submit Form 6 on voters.eci.gov.in or through your BLO/ERO.");
+    steps.push("3. Track the application reference number and respond to BLO/ERO verification if needed.");
   } else if (stage === "registered") {
-    steps.push("1. Search the official voter list and confirm your name, address, and polling area.");
+    steps.push("1. Search your name on electoralsearch.eci.gov.in.");
+    steps.push("2. Note Assembly Constituency, Parliamentary Constituency, polling station, part number, and serial number.");
+    steps.push("3. Download or save your voter information before polling day.");
   } else if (stage === "moved") {
-    steps.push("1. Apply for address correction or constituency transfer before the official deadline.");
+    steps.push("1. Use Form 8 for shifting residence or correcting details in the electoral roll.");
+    steps.push("2. Search again after approval to confirm the new polling station and constituency.");
   } else {
-    steps.push("1. Read the official candidate or volunteer rules for your election type.");
+    steps.push("1. Identify the exact election type: Lok Sabha, Assembly, municipal, or panchayat.");
+    steps.push("2. For Lok Sabha/Assembly, collect nomination forms and file before the Returning Officer after notification.");
+    steps.push("3. For municipal/panchayat elections, check your State Election Commission rules and local RO office.");
   }
 
-  steps.push("3. Save important deadlines and check only official election authority updates.");
-  steps.push("4. Before polling day, prepare accepted ID and locate your polling station.");
-  steps.push("5. After voting, follow official result channels and avoid spreading unverified claims.");
+  steps.push("4. For panchayat/municipal ward details, check the State Election Commission website for your state.");
+  steps.push("5. During MCC, avoid inducements, hate appeals, public-property misuse, and false information.");
+  steps.push("6. On polling day, go within notified polling hours with an accepted ID; voters in queue before close are normally allowed to vote.");
+  steps.push("7. Follow results only through official ECI/SEC result channels.");
 
-  if (electionDate && !Number.isNaN(electionDate.getTime())) {
-    const daysLeft = Math.ceil((electionDate - new Date()) / 86400000);
-    steps.unshift(`Election date selected: ${electionDate.toLocaleDateString()}. You have about ${daysLeft} day(s) to prepare.`);
-  }
-
-  addMessage("Assistant", steps.join("\n"));
-  updateReadiness();
-  updateGoogleLinks();
+  addMessage("Guide", steps.join("\n"));
 }
 
-async function askGemini(question) {
-  const key = localStorage.getItem("geminiApiKey");
-  if (!key) return null;
-
-  const prompt = `You are an election education assistant. Give concise, neutral, step-by-step guidance. Do not persuade the user who to vote for. User context: ${getContext()}. Question: ${question}`;
-
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(key)}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Gemini request failed");
-  }
-
-  const data = await response.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-}
-
-async function handleQuestion(question) {
+function handleQuestion(question) {
   addMessage("You", question, "user");
   userInput.value = "";
-
-  try {
-    const geminiAnswer = await askGemini(question);
-    addMessage("Assistant", geminiAnswer || offlineAnswer(question));
-  } catch {
-    addMessage("Assistant", `${offlineAnswer(question)}\n\nGemini could not be reached, so I used offline knowledge mode.`);
-  }
-}
-
-function updateGoogleLinks() {
-  const region = encodeURIComponent(countryInput.value || "election office");
-  const start = dateInput.value ? new Date(`${dateInput.value}T09:00:00`) : new Date();
-  const end = new Date(start.getTime() + 60 * 60 * 1000);
-  const format = (date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-  const text = encodeURIComponent("Check election registration and polling details");
-  const details = encodeURIComponent("Reminder created by Election Guide Assistant. Verify details with the official election authority.");
-
-  calendarLink.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${format(start)}/${format(end)}&details=${details}`;
-  mapsLink.href = `https://www.google.com/maps/search/${region}%20election%20office`;
-}
-
-function updateReadiness() {
-  const age = Number(ageInput.value || 0);
-  const hasRegion = countryInput.value.trim().length > 1;
-  const hasDate = Boolean(dateInput.value);
-  const stageBonus = stageInput.value === "registered" ? 16 : stageInput.value === "moved" ? 10 : 8;
-  const score = Math.min(96, 42 + (age >= 18 ? 22 : 5) + (hasRegion ? 10 : 0) + (hasDate ? 12 : 0) + stageBonus);
-
-  if (readinessScore) {
-    readinessScore.textContent = `${score}%`;
-  }
+  addMessage("AI Assistant", offlineAnswer(question));
 }
 
 chatForm.addEventListener("submit", (event) => {
@@ -170,16 +166,6 @@ chatForm.addEventListener("submit", (event) => {
 });
 
 document.querySelector("#buildPlan").addEventListener("click", buildRoadmap);
-document.querySelector("#heroRoadmap").addEventListener("click", buildRoadmap);
-
-document.querySelector("#saveKey").addEventListener("click", () => {
-  const key = apiKeyInput.value.trim();
-  if (key) {
-    localStorage.setItem("geminiApiKey", key);
-    modeStatus.textContent = "Gemini enabled";
-    addMessage("Assistant", "Gemini key saved in this browser. Future answers will try Gemini first, then fall back to offline mode.");
-  }
-});
 
 document.querySelector("#themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("dark");
@@ -189,17 +175,9 @@ document.querySelectorAll(".topic-button").forEach((button) => {
   button.addEventListener("click", () => handleQuestion(button.dataset.topic));
 });
 
-[countryInput, ageInput, stageInput, dateInput].forEach((field) => {
-  field.addEventListener("change", () => {
-    updateReadiness();
-    updateGoogleLinks();
-  });
-});
-
-setDefaultDate();
-updateReadiness();
-updateGoogleLinks();
+populateStates();
+modeStatus.textContent = "India process guide";
 addMessage(
-  "Assistant",
-  "Hi, I can explain election registration, timelines, polling-day steps, misinformation safety, and candidate basics. Tell me your situation or press Build my roadmap."
+  "AI Assistant",
+  "Namaste. I explain the Indian election system step by step: voter enrollment, constituency lookup, candidate nomination, Model Code of Conduct, polling-day timings, panchayat/local-body elections, EVM/VVPAT, counting, and official ECI links. Ask me your role or location."
 );
