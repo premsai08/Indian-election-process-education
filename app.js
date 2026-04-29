@@ -46,6 +46,19 @@ const statesAndUTs = [
   "West Bengal"
 ];
 
+const localityStateHints = {
+  tirupati: "Andhra Pradesh",
+  hyderabad: "Telangana",
+  vijayawada: "Andhra Pradesh",
+  visakhapatnam: "Andhra Pradesh",
+  chennai: "Tamil Nadu",
+  bengaluru: "Karnataka",
+  bangalore: "Karnataka",
+  mumbai: "Maharashtra",
+  delhi: "Delhi",
+  kolkata: "West Bengal"
+};
+
 const knowledge = [
   {
     keys: ["enroll", "register", "registration", "form 6", "voter id", "new voter"],
@@ -91,7 +104,8 @@ function populateStates() {
     option.textContent = name;
     stateInput.appendChild(option);
   });
-  stateInput.value = "Telangana";
+  stateInput.value = "Andhra Pradesh";
+  localityInput.value = "Tirupati";
 }
 
 function addMessage(sender, text, type = "") {
@@ -113,8 +127,60 @@ function getContext() {
   return `State/UT: ${stateInput.value}, locality: ${localityInput.value || "not entered"}, profile: ${stage}, age: ${age || "not provided"} (${ageText}).`;
 }
 
+function updateContextFromQuestion(question) {
+  const normalized = question.toLowerCase();
+  const ageMatch = normalized.match(/\b(?:age\s*(?:is)?\s*)?([1-9][0-9])\b/);
+  const locality = Object.keys(localityStateHints).find((name) => normalized.includes(name));
+
+  if (ageMatch) {
+    ageInput.value = ageMatch[1];
+  }
+
+  if (locality) {
+    localityInput.value = locality.charAt(0).toUpperCase() + locality.slice(1);
+    stateInput.value = localityStateHints[locality];
+  }
+
+  if (["enroll", "register", "voter card", "voter id", "form 6"].some((word) => normalized.includes(word))) {
+    stageInput.value = "new";
+  }
+}
+
+function enrollmentAnswer() {
+  const locality = localityInput.value || "your locality";
+  const state = stateInput.value;
+  const age = Number(ageInput.value || 0);
+
+  if (age && age < 18) {
+    return `For ${locality}, ${state}: you need to be 18 or above on the qualifying date to enroll as a voter. Until then, learn the process and keep age/address documents ready.`;
+  }
+
+  return `For you: ${locality}, ${state}, age ${age || "not provided"}.
+
+You can enroll for a voter card like this:
+
+1. Go to voters.eci.gov.in.
+2. Choose New Registration for General Elector, Form 6.
+3. Create or log in to your account with mobile/email OTP.
+4. Select State: ${state}.
+5. Enter your address in ${locality}. The portal/ERO uses this to map your Assembly Constituency, Parliamentary Constituency, polling part, and booth.
+6. Upload documents:
+   - Age proof: birth certificate, 10th certificate, PAN, passport, or other accepted proof.
+   - Address proof: Aadhaar, passport, bank passbook, utility bill, rent agreement, or other accepted proof.
+7. Submit Form 6 and save the reference number.
+8. A BLO/ERO may verify your details.
+9. Track status on voters.eci.gov.in.
+10. After approval, search your name on electoralsearch.eci.gov.in. If your name is in the electoral roll, you can vote. You can download e-EPIC if available.
+
+Important: voter card is useful, but the main requirement on polling day is your name in the electoral roll plus an accepted ID.`;
+}
+
 function offlineAnswer(question) {
   const normalized = question.toLowerCase();
+  if (["enroll", "register", "voter card", "voter id", "form 6"].some((word) => normalized.includes(word))) {
+    return enrollmentAnswer();
+  }
+
   const matched = knowledge.find((item) => item.keys.some((key) => normalized.includes(key)));
   const base = matched
     ? matched.answer
@@ -130,9 +196,11 @@ function buildRoadmap() {
   const steps = [`Roadmap for ${locality}, ${state}:`];
 
   if (stage === "new") {
-    steps.push("1. Confirm you are an Indian citizen and 18+ on the qualifying date.");
-    steps.push("2. Submit Form 6 on voters.eci.gov.in or through your BLO/ERO.");
-    steps.push("3. Track the application reference number and respond to BLO/ERO verification if needed.");
+    steps.push("1. You are 18+, so start with Form 6 for new voter enrollment.");
+    steps.push(`2. Select ${state} and enter your full address in ${locality}.`);
+    steps.push("3. Upload age proof and address proof, then submit Form 6.");
+    steps.push("4. Save the reference number and track the application status.");
+    steps.push("5. After approval, search your name in the electoral roll before polling day.");
   } else if (stage === "registered") {
     steps.push("1. Search your name on electoralsearch.eci.gov.in.");
     steps.push("2. Note Assembly Constituency, Parliamentary Constituency, polling station, part number, and serial number.");
@@ -146,18 +214,17 @@ function buildRoadmap() {
     steps.push("3. For municipal/panchayat elections, check your State Election Commission rules and local RO office.");
   }
 
-  steps.push("4. For panchayat/municipal ward details, check the State Election Commission website for your state.");
-  steps.push("5. During MCC, avoid inducements, hate appeals, public-property misuse, and false information.");
-  steps.push("6. On polling day, go within notified polling hours with an accepted ID; voters in queue before close are normally allowed to vote.");
-  steps.push("7. Follow results only through official ECI/SEC result channels.");
+  steps.push("Next: use voters.eci.gov.in for ECI voter services and electoralsearch.eci.gov.in to confirm your name after approval.");
+  steps.push("Note: panchayat/municipal ward details are checked through the State Election Commission of your state.");
 
   addMessage("Guide", steps.join("\n"));
 }
 
 function handleQuestion(question) {
+  updateContextFromQuestion(question);
   addMessage("You", question, "user");
   userInput.value = "";
-  addMessage("AI Assistant", offlineAnswer(question));
+  addMessage("Guide Assistant", offlineAnswer(question));
 }
 
 chatForm.addEventListener("submit", (event) => {
@@ -178,6 +245,6 @@ document.querySelectorAll(".topic-button").forEach((button) => {
 populateStates();
 modeStatus.textContent = "India process guide";
 addMessage(
-  "AI Assistant",
-  "Namaste. I explain the Indian election system step by step: voter enrollment, constituency lookup, candidate nomination, Model Code of Conduct, polling-day timings, panchayat/local-body elections, EVM/VVPAT, counting, and official ECI links. Ask me your role or location."
+  "Guide Assistant",
+  "Namaste. Tell me your city or village, age, and what you want to do. Example: I am from Tirupati, age 19, I want to enroll for voter card."
 );
