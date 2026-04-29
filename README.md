@@ -21,6 +21,12 @@ The project is a lightweight browser-based civic education guide for Indian elec
 - Model Code of Conduct explanation.
 - Official links to ECI voter services, electoral search, candidate affidavits, and results.
 
+## Google Services Used
+
+- Google Maps search links help users find nearby election offices, ERO/BLO support points, and voter-registration help around their selected locality.
+- Google Calendar reminder links help users schedule a follow-up to complete Form 6 or check enrollment status.
+- These integrations do not require API keys and do not store or transmit private data from the app.
+
 ## How It Works
 
 1. Open `index.html` in a browser.

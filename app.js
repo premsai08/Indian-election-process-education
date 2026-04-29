@@ -6,6 +6,8 @@ const localityInput = document.querySelector("#localityInput");
 const ageInput = document.querySelector("#ageInput");
 const stageInput = document.querySelector("#stageInput");
 const modeStatus = document.querySelector("#modeStatus");
+const googleMapsLink = document.querySelector("#googleMapsLink");
+const googleCalendarLink = document.querySelector("#googleCalendarLink");
 
 const statesAndUTs = [
   "Andaman and Nicobar Islands",
@@ -218,6 +220,28 @@ function buildRoadmap() {
   steps.push("Note: panchayat/municipal ward details are checked through the State Election Commission of your state.");
 
   addMessage("Guide", steps.join("\n"));
+  updateGoogleHelpers();
+}
+
+function updateGoogleHelpers() {
+  const state = stateInput.value || "India";
+  const locality = localityInput.value || "election office";
+  const placeQuery = encodeURIComponent(`${locality} ${state} election office ERO BLO voter registration`);
+  const start = new Date();
+  start.setDate(start.getDate() + 1);
+  start.setHours(10, 0, 0, 0);
+  const end = new Date(start.getTime() + 60 * 60 * 1000);
+  const format = (date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  const title = encodeURIComponent("Complete Form 6 voter enrollment");
+  const details = encodeURIComponent(`Use voters.eci.gov.in for Form 6. Context: ${locality}, ${state}. Verify final details with ECI/CEO/ERO/BLO.`);
+
+  if (googleMapsLink) {
+    googleMapsLink.href = `https://www.google.com/maps/search/${placeQuery}`;
+  }
+
+  if (googleCalendarLink) {
+    googleCalendarLink.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${format(start)}/${format(end)}&details=${details}`;
+  }
 }
 
 function handleQuestion(question) {
@@ -242,7 +266,12 @@ document.querySelectorAll(".topic-button").forEach((button) => {
   button.addEventListener("click", () => handleQuestion(button.dataset.topic));
 });
 
+[stateInput, localityInput, ageInput, stageInput].forEach((field) => {
+  field.addEventListener("change", updateGoogleHelpers);
+});
+
 populateStates();
+updateGoogleHelpers();
 modeStatus.textContent = "India process guide";
 addMessage(
   "Guide Assistant",
