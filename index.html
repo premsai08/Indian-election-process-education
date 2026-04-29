@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Election Guide Assistant</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Virtual PromptWars - Challenge 2</p>
+        <h1>Election Guide Assistant</h1>
+      </div>
+      <button id="themeToggle" class="icon-button" aria-label="Toggle dark mode">◐</button>
+    </header>
+
+    <main class="app-shell">
+      <section class="workspace" aria-label="Election assistant">
+        <div class="assistant-panel">
+          <div class="assistant-header">
+            <div>
+              <h2>Ask about elections</h2>
+              <p>Get simple explanations, timelines, and next steps based on your situation.</p>
+            </div>
+            <span class="status-pill" id="modeStatus">Offline knowledge mode</span>
+          </div>
+
+          <div id="chatLog" class="chat-log" aria-live="polite"></div>
+
+          <form id="chatForm" class="chat-form">
+            <label class="sr-only" for="userInput">Ask a question</label>
+            <input
+              id="userInput"
+              type="text"
+              autocomplete="off"
+              placeholder="Example: How do I register to vote?"
+              required
+            />
+            <button type="submit">Send</button>
+          </form>
+        </div>
+
+        <aside class="side-panel" aria-label="Assistant controls">
+          <section>
+            <h2>Your Context</h2>
+            <div class="field-grid">
+              <label>
+                Country or region
+                <input id="countryInput" value="India" />
+              </label>
+              <label>
+                Age
+                <input id="ageInput" type="number" min="1" value="18" />
+              </label>
+              <label>
+                Current stage
+                <select id="stageInput">
+                  <option value="new">New voter</option>
+                  <option value="registered">Already registered</option>
+                  <option value="moved">Moved to new address</option>
+                  <option value="candidate">Interested candidate/volunteer</option>
+                </select>
+              </label>
+              <label>
+                Election date
+                <input id="dateInput" type="date" />
+              </label>
+            </div>
+            <button id="buildPlan" class="wide-button">Build my roadmap</button>
+          </section>
+
+          <section>
+            <h2>Google Services</h2>
+            <p class="hint">Optional: add a Gemini API key for smarter answers. The key stays in your browser.</p>
+            <label>
+              Gemini API key
+              <input id="apiKeyInput" type="password" placeholder="AIza..." />
+            </label>
+            <button id="saveKey" class="wide-button secondary">Save key locally</button>
+            <div class="quick-actions">
+              <a id="calendarLink" target="_blank" rel="noreferrer">Add reminder</a>
+              <a id="mapsLink" target="_blank" rel="noreferrer">Find election office</a>
+            </div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="cards-band" aria-label="Helpful election topics">
+        <article>
+          <h3>Registration</h3>
+          <p>Eligibility, documents, voter roll checks, and address correction.</p>
+          <button class="topic-button" data-topic="Explain voter registration step by step">Open</button>
+        </article>
+        <article>
+          <h3>Timeline</h3>
+          <p>What to do before, during, and after polling day.</p>
+          <button class="topic-button" data-topic="Create an election timeline for me">Open</button>
+        </article>
+        <article>
+          <h3>Voting Day</h3>
+          <p>How to prepare, what to carry, and how voting generally works.</p>
+          <button class="topic-button" data-topic="What happens on voting day?">Open</button>
+        </article>
+        <article>
+          <h3>Safety</h3>
+          <p>How to identify misinformation and use official sources.</p>
+          <button class="topic-button" data-topic="How can I avoid election misinformation?">Open</button>
+        </article>
+      </section>
+    </main>
+
+    <template id="messageTemplate">
+      <div class="message">
+        <strong></strong>
+        <p></p>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
