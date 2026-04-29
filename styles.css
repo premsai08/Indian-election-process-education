@@ -416,7 +416,7 @@ body.dark .insight-band article {
 
 .section-heading h2,
 .assistant-header h2 {
-  font-size: 1.35rem;
+  font-size: clamp(1.16rem, 2.4vw, 1.35rem);
   letter-spacing: 0;
   margin-bottom: 6px;
 }
@@ -483,6 +483,55 @@ select:focus {
   border: 1px solid var(--line);
   box-shadow: none;
   color: var(--text);
+  min-height: auto;
+}
+
+.official-links a {
+  align-items: flex-start;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.1), rgba(34, 87, 122, 0.04)),
+    var(--surface-2);
+  display: grid;
+  gap: 4px;
+  justify-content: stretch;
+  overflow: hidden;
+  padding: 14px 15px;
+  position: relative;
+  text-align: left;
+}
+
+.official-links a::before {
+  background: var(--green);
+  border-radius: 99px;
+  content: "";
+  height: 10px;
+  left: 14px;
+  position: absolute;
+  top: 20px;
+  width: 10px;
+}
+
+.official-links span,
+.official-links small {
+  display: block;
+  padding-left: 20px;
+}
+
+.official-links span {
+  color: var(--text);
+  font-size: 0.98rem;
+}
+
+.official-links small {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.official-links a:hover {
+  border-color: rgba(15, 118, 110, 0.45);
+  box-shadow: 0 12px 24px rgba(15, 118, 110, 0.12);
 }
 
 .officer-card {
