@@ -1,0 +1,5 @@
+.git
+docs
+local-server.mjs
+node_modules
+npm-debug.log

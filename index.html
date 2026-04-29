@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bharat Election Guide</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' https://upload.wikimedia.org https://commons.wikimedia.org; img-src 'self' data: https://upload.wikimedia.org https://commons.wikimedia.org; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    />
     <link rel="icon" href="logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -187,6 +191,7 @@
               <label for="geminiKeyInput">Optional Gemini API key for live AI answers</label>
               <input id="geminiKeyInput" type="password" placeholder="Paste Google AI Studio API key" />
               <button id="saveGeminiKey" type="button">Connect Gemini</button>
+              <small id="geminiStatusText">Current mode: offline election guide</small>
             </div>
             <div class="officer-card">
               <small>Election Commission of India</small>

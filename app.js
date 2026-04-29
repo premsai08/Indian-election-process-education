@@ -19,6 +19,7 @@ const googleMapsLink = document.querySelector("#googleMapsLink");
 const googleCalendarLink = document.querySelector("#googleCalendarLink");
 const geminiKeyInput = document.querySelector("#geminiKeyInput");
 const saveGeminiKeyButton = document.querySelector("#saveGeminiKey");
+const geminiStatusText = document.querySelector("#geminiStatusText");
 
 function getStageLabel(stageValue) {
   return stageInput.querySelector(`option[value="${stageValue}"]`)?.textContent || "New voter";
@@ -76,6 +77,13 @@ function updateGoogleHelpers() {
   googleCalendarLink.href = links.calendar;
 }
 
+function updateGeminiStatus(label) {
+  modeStatus.textContent = label;
+  if (geminiStatusText) {
+    geminiStatusText.textContent = `Current mode: ${label.toLowerCase()}`;
+  }
+}
+
 function buildRoadmap() {
   addMessage("Guide", createRoadmap(getContext()));
   updateGoogleHelpers();
@@ -88,16 +96,16 @@ async function answerQuestion(question) {
 
   const apiKey = localStorage.getItem("geminiApiKey");
   if (!apiKey) {
-    modeStatus.textContent = "Offline guide mode";
+    updateGeminiStatus("Offline guide mode");
     return createOfflineAnswer(question, getContext());
   }
 
   try {
     const answer = await requestGeminiAnswer(question, getContext(), apiKey);
-    modeStatus.textContent = "Gemini live mode";
+    updateGeminiStatus("Gemini live mode");
     return answer || createOfflineAnswer(question, getContext());
   } catch {
-    modeStatus.textContent = "Offline fallback mode";
+    updateGeminiStatus("Offline fallback mode");
     return `${createOfflineAnswer(question, getContext())}\n\nGemini could not be reached, so the app used the offline election guide.`;
   }
 }
@@ -136,13 +144,13 @@ saveGeminiKeyButton?.addEventListener("click", () => {
     return;
   }
   localStorage.setItem("geminiApiKey", key);
-  modeStatus.textContent = "Gemini ready";
+  updateGeminiStatus("Gemini ready");
   addMessage("Guide Assistant", "Google Gemini is now connected for richer answers. The app still keeps the offline election guide as a fallback.");
 });
 
 populateStates();
 updateGoogleHelpers();
-modeStatus.textContent = localStorage.getItem("geminiApiKey") ? "Gemini ready" : "Offline guide mode";
+updateGeminiStatus(localStorage.getItem("geminiApiKey") ? "Gemini ready" : "Offline guide mode");
 addMessage(
   "Guide Assistant",
   "Namaste. Tell me your city or village, age, and what you want to do. Example: I am from Tirupati, age 19, I want to enroll for voter card."

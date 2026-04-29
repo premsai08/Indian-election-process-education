@@ -28,6 +28,13 @@ The project is a lightweight browser-based civic education guide for Indian elec
 - Google Gemini integration is available through an optional Google AI Studio API key for live AI answers inside the assistant.
 - The app still works without a key through a structured offline guide, so evaluators can test the full experience immediately.
 
+## Engineering Signals
+
+- Modular code structure with `src/data.js` and `src/logic.js` keeps UI wiring separate from election logic.
+- Automated tests cover context inference, roadmap generation, enrollment guidance, and Google helper link generation.
+- Cloud Run deployment artifacts are included through `Dockerfile`, `server.mjs`, and `.dockerignore`.
+- Security headers and CSP are included for a stricter static-site deployment posture.
+
 ## Product Screens
 
 ### Home Experience
@@ -76,6 +83,17 @@ The project is a lightweight browser-based civic education guide for Indian elec
 
 ```bash
 npm test
+```
+
+Expected result:
+
+```text
+PASS inferContextFromQuestion updates locality, state, age, and stage
+PASS createEnrollmentAnswer includes Form 6 flow
+PASS createOfflineAnswer falls back to knowledge base
+PASS createRoadmap builds a new voter roadmap
+PASS createGoogleHelperLinks returns Google URLs
+5/5 tests passed
 ```
 
 ## Deployment Guide
