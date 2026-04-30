@@ -26,13 +26,15 @@ The project is a lightweight browser-based civic education guide for Indian elec
 - Google Maps search links help users find nearby election offices, ERO/BLO support points, and voter-registration help around their selected locality.
 - Google Calendar reminder links help users schedule a follow-up to complete Form 6 or check enrollment status.
 - Google Gemini integration is available through an optional Google AI Studio API key for live AI answers inside the assistant.
+- Google Cloud Run hosts the deployed application, while Docker and Cloud Build configuration are included for repeatable deployment.
 - The app still works without a key through a structured offline guide, so evaluators can test the full experience immediately.
 
 ## Engineering Signals
 
 - Modular code structure with `src/data.js` and `src/logic.js` keeps UI wiring separate from election logic.
-- Automated tests cover context inference, roadmap generation, enrollment guidance, and Google helper link generation.
-- Cloud Run deployment artifacts are included through `Dockerfile`, `server.mjs`, and `.dockerignore`.
+- Automated tests cover context inference, roadmap generation, enrollment guidance, underage handling, candidate guidance, and Google helper link generation.
+- Cloud Run deployment artifacts are included through `Dockerfile`, `server.mjs`, `.dockerignore`, and `cloudbuild.yaml`.
+- GitHub Actions CI is included to run tests automatically on push and pull requests.
 - Security headers and CSP are included for a stricter static-site deployment posture.
 
 ## Product Screens
@@ -91,9 +93,12 @@ Expected result:
 PASS inferContextFromQuestion updates locality, state, age, and stage
 PASS createEnrollmentAnswer includes Form 6 flow
 PASS createOfflineAnswer falls back to knowledge base
+PASS createEnrollmentAnswer handles underage voter
 PASS createRoadmap builds a new voter roadmap
+PASS createRoadmap builds a candidate roadmap
 PASS createGoogleHelperLinks returns Google URLs
-5/5 tests passed
+PASS requestGeminiAnswer returns null without API key
+8/8 tests passed
 ```
 
 ## Deployment Guide

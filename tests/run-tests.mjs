@@ -5,7 +5,8 @@ import {
   createGoogleHelperLinks,
   createOfflineAnswer,
   createRoadmap,
-  inferContextFromQuestion
+  inferContextFromQuestion,
+  requestGeminiAnswer
 } from "../src/logic.js";
 
 const baseContext = {
@@ -56,6 +57,19 @@ const tests = [
     }
   },
   {
+    name: "createEnrollmentAnswer handles underage voter",
+    run() {
+      const answer = createEnrollmentAnswer({
+        state: "Andhra Pradesh",
+        locality: "Tirupati",
+        age: 17,
+        stage: "new",
+        stageLabel: "New voter"
+      });
+      assert.match(answer, /18 or above/);
+    }
+  },
+  {
     name: "createRoadmap builds a new voter roadmap",
     run() {
       const roadmap = createRoadmap({
@@ -70,6 +84,20 @@ const tests = [
     }
   },
   {
+    name: "createRoadmap builds a candidate roadmap",
+    run() {
+      const roadmap = createRoadmap({
+        state: "Andhra Pradesh",
+        locality: "Tirupati",
+        age: 28,
+        stage: "candidate",
+        stageLabel: "Candidate or volunteer"
+      });
+      assert.match(roadmap, /Returning Officer/);
+      assert.match(roadmap, /State Election Commission/);
+    }
+  },
+  {
     name: "createGoogleHelperLinks returns Google URLs",
     run() {
       const links = createGoogleHelperLinks({
@@ -81,6 +109,20 @@ const tests = [
       }, new Date("2026-04-29T00:00:00Z"));
       assert.match(links.maps, /google\.com\/maps/);
       assert.match(links.calendar, /calendar\.google\.com/);
+      assert.match(links.maps, /Tirupati/);
+    }
+  },
+  {
+    name: "requestGeminiAnswer returns null without API key",
+    async run() {
+      const result = await requestGeminiAnswer("How do I enroll?", {
+        state: "Andhra Pradesh",
+        locality: "Tirupati",
+        age: 19,
+        stage: "new",
+        stageLabel: "New voter"
+      }, "");
+      assert.equal(result, null);
     }
   }
 ];
@@ -89,7 +131,7 @@ let passed = 0;
 
 for (const test of tests) {
   try {
-    test.run();
+    await test.run();
     console.log(`PASS ${test.name}`);
     passed += 1;
   } catch (error) {
